@@ -1,0 +1,127 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active">
+                    <a href="{% url 'colaboradores:contratado_index' %}">Contratados</a>
+                </li>
+                <li>
+                    <a href="#">Diretores</a>
+                </li>
+                <li>
+                    <a href="#">Estagiários</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h3 class="panel-title ellipsis">Trabalhadores Contratados</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4 form-group">
+                            <input id="buscaNome" type="text" placeholder="Buscar por nome (qualquer parte)"
+                                   class="form-control filtro">
+                        </div>
+                    </div>
+
+                    <div id="tabela-trabalhadores">
+                        <div class="table-responsive">
+
+
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Matrícula</th>
+                                    <th class="col-table-4">Nome</th>
+                                    <th class="col-table-3">Estabelecimento</th>
+                                    <th class="col-table-2">Lotação</th>
+                                    <th class="col-table-1">Depend.</th>
+                                    <th class="col-table-2">Ficha de registro</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {% for contratado in contratados %}
+                                    <tr>
+                                        <td>
+                                            {{ contratado.con_matricula }}
+                                        <td>
+                                            <a href="{% url 'colaboradores:contratado_detail' pk=contratado.pk %}">{{ contratado.pes_nome }}</a><br>
+
+                                        </td>
+                                        <td>
+                                            {{ contratado.estabelecimento }}
+                                        <td>
+                                            {{ contratado.lotacao }}
+                                        <td><a href="#">0</a></td>
+                                        <td><a href="#">Cadastrar</a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {% if contratados.has_other_pages %}
+                                    {% if contratados.has_previous %}
+                                        <ul class="pagination">
+                                        <li class="active">
+                                            <a href="?page={{ contratados.previous_page_number }}"
+                                               aria-label="Anterior">
+                                                <span class="glyphicon glyphicon-chevron-left"></span> Anterior
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="disabled">
+                                            <a href="#" aria-label="Anterior">
+                                                <span class="glyphicon glyphicon-chevron-left"></span> Anterior
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% for i in contratados.paginator.page_range %}
+                                    {% if contratados.number == i %}
+                                        <li class="active"><a href="javascript:void(0);">{{ i }}</a></li>
+                                    {% else %}
+                                        <li class="active"><a href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if contratados.has_next %}
+                                    <li class="enabled">
+                                        <a href="?page={{ contratados.next_page_number }}" aria-label="Próximo">
+                                            <span class="glyphicon glyphicon-chevron-right"></span> Próximo
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="disabled">
+                                        <a href="javascript:void(0);" aria-label="Próximo">
+                                            <span class="glyphicon glyphicon-chevron-right"></span> Próximo
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                </ul>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="btn btn-success" href="{% url 'colaboradores:contratado_add' %}"><span
+                    class="glyphicon glyphicon-plus"></span> Adicionar trabalhador</a>
+        </div>
+    </div>
+
+
+
+{% endblock %}

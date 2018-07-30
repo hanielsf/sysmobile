@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+    {% load static %}
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="Gestao em Assistência Técnica">
+      <title>SysMobile | Login</title>
+
+        <!-- START STYLESHEETS -->
+        <script type="text/javascript" src="{% static 'js/pace.min.js' %}"></script>
+		<link rel="stylesheet" href="{% static 'css/athom.css' %}">
+
+        <!-- Application stylesheet : mandatory -->
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+        <link rel="stylesheet" href="{% static 'css/uielement.css' %}">
+        <link rel="stylesheet" href="{% static 'css/gritter.css' %}">
+        <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+      <link href="{% static 'vendor/sweetalert2/sweetalert2.min.css' %}" rel="stylesheet">
+        <!--/ Application stylesheet -->
+
+		<!-- modernizr script -->
+        <script type="text/javascript" src="{% static 'js/modernizr-custom.js' %}"></script>
+        <!--/ modernizr script -->
+        <!-- END STYLESHEETS -->
+
+      <!-- Fav icons -->
+    <link rel="apple-touch-icon" href="{% static 'img/apple-touch-icon.png' %}">
+    <link rel="icon" href="{% static 'img/favicon.png' %}">
+      {{ form.media }}
+  </head>
+
+<!-- START Body -->
+    <body>
+
+
+            {% block content %}
+            {% endblock %}
+
+
+
+    <!-- Scripts -->
+        <script type="text/javascript" src="{% static 'js/vendor.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/core.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/app.js' %}"></script>
+        <!--/ Application and vendor script : mandatory -->
+
+        <script type="text/javascript" src="{% static 'js/pace.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'vendor/gritter/js/jquery.gritter.js' %}"></script>
+
+
+		<script type="text/javascript">
+            $(function () {
+
+			var ua = window.navigator.userAgent;
+
+            var msie = ua.indexOf('MSIE ');
+            if (msie > 0) {
+                $.gritter.add({
+                    title: 'Atenção!',
+                    text: 'Não é recomendado que utilize Internet Explorer para acessar o SysMobile. Por favor utilize qualquer outro navegado mais moderno.',
+                    image: "/resources/image/icons/alerta.png",
+                    'class_name': 'gritter-light',
+                    sticky: true
+                });
+            }
+
+            var trident = ua.indexOf('Trident/');
+            if (trident > 0) {
+                $.gritter.add({
+                    title: 'Atenção!',
+                    text: 'Não é recomendado que utilize Internet Explorer para acessar o SysMobile. Por favor utilize qualquer outro navegado mais moderno.',
+                    image: "/resources/image/icons/alerta.png",
+                    'class_name': 'gritter-light',
+                    sticky: true
+                });
+            }
+
+
+			$('#form-login').submit(function(){
+				$('#btn-entrar').prop('disabled', true);
+			});
+		})
+		</script>
+    <!--/ Application and vendor script : mandatory -->
+        <script src="{% static 'vendor/sweetalert2/sweetalert2.min.js' %}"></script>
+
+
+    <!-- Sweet Alert -->
+    {% load sweetify %}
+    {% sweetify %}
+
+    {% block javascript %}
+    {% endblock %}
+
+  </body>
+
+</html>
+

@@ -1,0 +1,262 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load qr_code %}
+
+{% block titulo %}
+    <h4 class="title semibold">O.S #{{ ordemservico.os_id }}</h4>
+{% endblock %}
+
+{% block toolbar %}
+    <div class="toolbar">
+        <ol class="breadcrumb breadcrumb-transparent nm">
+            <li><a href="/">Desktop</a></li>
+            <li><a href="{% url 'servicos:ordemservicos_index' %}">Ordem Serviço</a></li>
+            <li class="active">Visualizando ordem de serviço</li>
+        </ol>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav nav-pills nav-stacked">
+                <li>
+                    <a href="{% url 'servicos:ordemservicos_index' %}">Ordens de Serviço</a>
+                </li>
+                <li>
+                    <a href="{% url 'clientes:clientes_index' %}">Clientes</a>
+                </li>
+                <li>
+                    <a href="{% url 'dispositivos:dispositivos_index' %}">Dispositivos</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div >
+
+                <section class="content content_content" style="width: 70%; margin: auto;">
+                    <section class="invoice">
+                        <!-- title row -->
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h2 class="page-header">
+                                    <i class="fa fa-globe"></i> {{ ordemservico.cliente.pes_nome }}
+                                    <small class="pull-right">Data: {{ ordemservico.created_at|date:'d/m/y' }}</small>
+                                </h2>
+                            </div><!-- /.col -->
+                        </div>
+                        <!-- info row -->
+                        <div class="row invoice-info">
+
+                            <div class="col-sm-4 invoice-col" align="left">
+                                <div>
+                                       CPF:
+                                    <p class="cpf">{{ ordemservico.cliente.pes_cpf }}</p>
+                                    Celular:
+                                    <p class="celular">{{ ordemservico.cliente.pes_celular }}
+                                </div>
+                            </div><!-- /.col -->
+                            <div class="col-sm-4 invoice-col" align="center">
+                            </div>
+                            <div class="col-sm-4 invoice-col" align="right">
+                                <b>O.S #{{ ordemservico.os_id }}</b><br>
+                                <b>Hora: {{ ordemservico.created_at|date:'H:i' }}</b>
+                                <br><br>
+                                <b>Aberta por:</b><br>
+                                <b>{{ ordemservico.historico.get_history_user }}</b><br>
+
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+
+                        <!-- Table row -->
+                        <div class="row">
+                            <div class="col-xs-12 table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Marca</th>
+                                        <th>Modelo</th>
+                                        <th>IMEI</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                    <tr>
+                                        <td>{{ ordemservico.dispositivos.get_marca_display }}</td>
+                                        <td>{{ ordemservico.dispositivos.modelo|upper }}</td>
+                                        <td>{{ ordemservico.dispositivos.imei }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+
+                         <!-- Table row -->
+                        <div class="row">
+                            <div class="col-xs-12 table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Tipo de serviço</th>
+                                        <th>Observação</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                    <tr>
+                                        <td>{{ ordemservico.get_tipo_servico_display }}</td>
+                                        <td>
+                                            {% if ordemservico.descricao == isnull %}
+                                                sem observações.
+                                            {% else %}
+                                                {{ ordemservico.descricao }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+
+                     <!-- Table row -->
+                        <div class="row">
+                            <div class="col-xs-12 table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Acessórios (itens junto ao dispositivo)</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                    <tr>
+                                        <td>{% if ordemservico.acessorios == isnull %}
+                                                nenhum acessório.
+                                            {% else %}
+                                                {{ ordemservico.acessorios|lower }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                        <br>
+
+                        <div class="row">
+                            <!-- accepted payments column -->
+                            <div class="col-md-12">
+                                <p class="lead"><strong>Status:</strong> {{ ordemservico.get_status_display }}</p>
+                                <p class="text-center">
+                                    <img width="128px" src="{{ qr_url }}" alt="QRCode"></p>
+
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <th>Orçamento:</th>
+                                            <th>{{ ordemservico.orcamento }}</th>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                </div>
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+
+                        <!-- this row will not appear when printing -->
+                        <div class="row no-print">
+                            <div class="col-xs-12">
+                                <a href="{% url 'pdf:generate_pdf' pk=ordemservico.pk %}" target="_blank" id="trigger" class="btn btn-default"><i class="fa fa-print"></i> Imprimir</a>
+                                <button class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Encerrar
+                                </button>
+                                <a href="{% url 'servicos:ordemservicos_edit' pk=ordemservico.pk %}" class="btn btn-primary pull-right" style="margin-right: 5px;"><i
+                                        class="fa fa-download"></i> Editar
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+
+            </div>
+            <div class="content content_content" style="width: 80%; margin: auto;">
+                <div class="panel-heading">
+                    <h4 class="panel-title panel-title-mini">Histórico</h4>
+                    <div class="panel-toolbar text-right">
+
+                    </div>
+                </div>
+                <div class="table-responsive invoice">
+                    <table class="table table-stripped table-hover">
+                        <thead>
+                        <tr>
+                            <th class="col-table-1">Data/Hora</th>
+                            <th class="col-table-1">Ação</th>
+                            <th class="col-table-1">Status</th>
+                            <th class="col-table-6">Descrição</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{ ordemservico.updated_at|date:'d/m/y H:i'}}</td>
+                            <td></td>
+                            <td>{{ ordemservico.historico.get_history_user }}</td>
+                            <td>Aparelho com tela trincada. Muitos arranhões. Sem carregador.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Delete -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Confirmação</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>Tem certeza que deseja deletar a ordem d serviço???</h4><br>
+                    <h4>ID: {{ ordemservico.pk }}</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <a id="btn-excluir"
+                       class="btn btn-danger"
+                       href="{% url 'servicos:ordemservicos_delete' pk=ordemservico.pk %}">Deletar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ...Modal Delete -->
+
+
+
+{% endblock %}
+
+{% block javascript %}
+
+     <script type="text/javascript" src="{% static 'js/jquery.mask.min.js' %}"></script>
+
+    <script>
+        $('.dinheiro').mask('#.##0,00', {reverse: true});
+        $('.telefone').mask('(00) 0000-0000');
+        $('.celular').mask('(00) 0 0000-0000');
+        $('.cpf').mask('000.000.000-00');
+    </script>
+
+
+{% endblock %}

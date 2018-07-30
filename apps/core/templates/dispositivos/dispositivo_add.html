@@ -1,0 +1,105 @@
+{% extends 'core/base.html' %}
+{% load core_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+    {% block toolbar %}
+          <div class="toolbar">
+             <ol class="breadcrumb breadcrumb-transparent nm">
+                 <li><a href="/">Desktop</a></li>
+                 <li><a href="{% url 'dispositivos:dispositivos_index' %}">Dispositivos</a></li>
+                 <li class="active">Adicionando Dispositivo</li>
+              </ol>
+           </div>
+      {% endblock %}
+
+{% block title %}
+    <h4 class="topbar-title">Add Dispositivo</h4>
+{% endblock %}
+
+{% block content %}
+
+                <div class="row">
+                    <div class="col-md-2">
+                  		<ul class="nav nav-pills nav-stacked">
+                  			<li>
+                  				<a href="{% url 'dispositivos:dispositivos_index' %}">Dispositivos</a>
+                  			</li>
+                  			<li>
+                  				<a href="{% url 'clientes:clientes_index' %}">Clientes</a>
+                  			</li>
+                  			<li>
+                  				<a href="{% url 'servicos:ordemservicos_index' %}">Ordem Serviço</a>
+                  			</li>
+                  		</ul>
+                    </div>
+
+                    <div class="col-md-9">
+
+                    	<form class="form-horizontal panel panel-inverse" id="adOS" accept-charset="ISO-8859-1" method="post" >
+                    	{% csrf_token %}
+                    		<div class="panel-heading">
+                    	  		<h3 class="panel-title">Add dispositivo</h3>
+                    	  	</div>
+
+
+                    	  <div class="panel-body">
+                    	  		<input type="hidden" id="id" name="id" value="">
+                    	  		<div class="form-group">
+                    	  			<label class="control-label col-sm-4">Marca*</label>
+                    	  			<div class="col-sm-6">
+                    	  				{{ form.marca|addcss:"form-control" }}
+                    	  			</div>
+                    	  		</div>
+                    	  		<div class="form-group">
+                    	  			<label class="control-label col-sm-4">Modelo*</label>
+                    	  			<div class="col-sm-6">
+                    	  				{% render_field form.modelo|append_attr:"" onkeyup="this.value = this.value.toUpperCase();" %}
+                    	  			</div>
+                    	  		</div>
+                    	  	 	<div class="form-group">
+                   	  				<label class="control-label col-sm-4">IMEI</label>
+                   	  				<div class="col-sm-6">
+                   	  					<input type="text" name="{{ form.imei.html_name }}"
+                                                  minlength="14" maxlength="15" class="form-control imei" id="{{ form.imei.id_for_label }}">
+                   	  				</div>
+                   	  			</div>
+                              <div class="form-group">
+                    	  			<label class="control-label col-sm-4">Cliente</label>
+                    	  			<div class="col-sm-6">
+                    	  				{{ form.cliente|addcss:"form-control" }}
+                    	  			</div>
+                                  <div class="col-sm-2">
+                    	  				<a href="#" id="cadastraCliente">Cadastrar</a>
+                    	  			</div>
+                    	  		</div>
+                    	  		<div class="form-group">
+                    	  			<label class="control-label col-sm-4">Imagem do Produto</label>
+                    	  			<div class="col-sm-6">
+                    	  				{{ form.url_img|addcss:"form-control" }}
+                    	  			</div>
+                    	  		</div>
+                    	  	</div>
+
+
+                    	  	<div class="panel-footer">
+                    	  		<input type="submit" class="btn btn-primary" value="Salvar" id="salvar" data-loading-text="Processando...">
+                    	  		<a href="{% url 'dispositivos:dispositivos_index' %}">Cancelar</a>
+                    	  	</div>
+						</form>
+					</div>
+			    </div>
+
+
+{% endblock %}
+{% block javascript %}
+
+     <script type="text/javascript" src="{% static 'js/jquery.mask.min.js' %}"></script>
+
+    <script>
+        $('.imei').mask('999999999999999');
+    </script>
+
+
+{% endblock %}
+

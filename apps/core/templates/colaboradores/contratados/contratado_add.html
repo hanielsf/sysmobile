@@ -1,0 +1,101 @@
+{% extends 'core/base.html' %}
+{% load core_tags %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}
+    <h4 class="topbar-title">Add Contratado</h4>
+{% endblock %}
+
+{% block content %}
+
+                <div class="row">
+                    <div class="col-md-2">
+                  		<ul class="nav nav-pills nav-stacked">
+                  			<li>
+                  				<a href="{% url 'colaboradores:contratado_index' %}">Contratados</a>
+                  			</li>
+                  			<li>
+                  				<a href="#">Diretores</a>
+                  			</li>
+                  			<li>
+                  				<a href="#">Estagiários</a>
+                  			</li>
+                  		</ul>
+                    </div>
+
+                    <div class="col-md-9">
+
+                    	<form class="form-horizontal panel panel-inverse" accept-charset="ISO-8859-1" method="post">
+                    	{% csrf_token %}
+                    		<div class="panel-heading">
+                    	  		<h3 class="panel-title">Informações básicas</h3>
+                    	  	</div>
+
+
+                    	  <div class="panel-body">
+                    	  		<input type="hidden" id="id" name="id" value="">
+                    	  		<div class="form-group">
+                    	  			<label class="control-label col-sm-4">Nome*</label>
+                    	  			<div class="col-sm-6">
+                    	  				{{ form.pes_nome }}
+                    	  			</div>
+                    	  		</div>
+                    	  		<div class="form-group">
+                    	  			<label class="control-label col-sm-4">Matrícula*</label>
+                    	  			<div class="col-sm-6">
+                    	  				{{ form.con_matricula }}
+                    	  			</div>
+                    	  		</div>
+                    	  	 	<div class="form-group">
+                   	  				<label class="control-label col-sm-4">Email</label>
+                   	  				<div class="col-sm-6">
+                   	  					{{ form.pes_email }}
+                   	  				</div>
+                   	  			</div>
+                    	  		<div class="form-group">
+                    	  			<label class="control-label col-sm-4">Estabelecimento</label>
+                    	  			<div class="col-sm-6">
+                    	  				{{ form.estabelecimento|addcss:"form-control" }}
+                    	  			</div>
+                    	  		</div>
+                    	  		<div class="form-group">
+                    	  			<label class="control-label col-sm-4">Lotação*</label>
+                    	  			<div class="col-sm-4">
+                    	  				{{ form.lotacao|addcss:"form-control" }}
+                    	  			</div>
+                    	  			<div class="col-sm-2">
+                    	  				<a href="#" id="cadastraLotacaoBt">Cadastrar lotação básica</a>
+                    	  			</div>
+                    	  		</div>
+                    	  		<div class="form-group">
+                    	  			<label class="control-label col-sm-4">Função*</label>
+                    	  			<div class="col-sm-4">
+                    	  				{{ form.funcao|addcss:"form-control" }}
+                    	  			</div>
+                    	  			<div class="col-sm-2">
+                    	  				<a href="#" id="cadastraFuncaoBt">Cadastrar nova</a>
+                    	  			</div>
+                    	  		</div>
+                    	  		<div class="form-group">
+                    	  			<label class="control-label col-sm-4">Sindicato</label>
+                    	  			<div class="col-sm-4">
+                    	  				{{ form.sindicato|addcss:"form-control" }}
+                    	  			</div>
+                    	  			<div class="col-sm-2">
+                    	  				<a href="#" id="cadastraSindicatoBt">Cadastrar novo</a>
+                    	  			</div>
+                    	  		</div>
+                    	  	</div>
+
+
+                    	  	<div class="panel-footer">
+                    	  		<input type="submit" class="btn btn-primary" value="Salvar e continuar" id="salvar" data-loading-text="Processando...">
+                    	  		<a href="{% url 'colaboradores:contratado_index' %}">Cancelar</a>
+                    	  	</div>
+						</form>
+					</div>
+			    </div>
+
+
+{% endblock %}

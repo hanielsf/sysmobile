@@ -1,0 +1,4 @@
+<option value="">---------</option>
+{% for dispositivo in dispositivos %}
+<option value="{{ dispositivo.pk }}">{{ dispositivo.modelo }}</option>
+{% endfor %}

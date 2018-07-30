@@ -1,0 +1,214 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+  {% block toolbar %}
+      <div class="toolbar">
+         <ol class="breadcrumb breadcrumb-transparent nm">
+             <li><a href="/">Desktop</a></li>
+             <li><a href="{% url 'clientes:clientes_index' %}">Clientes</a></li>
+             <li class="active">Visualizando Cliente</li>
+          </ol>
+       </div>
+  {% endblock %}
+
+{% block content %}
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav nav-pills nav-stacked">
+                <li>
+                    <a href="{% url 'clientes:clientes_index' %}">Todos os Clientes</a>
+                </li>
+                <li>
+                    <a href="{% url 'dispositivos:dispositivos_index' %}">Dispositivos</a>
+                </li>
+                <li>
+                    <a href="{% url 'servicos:ordemservicos_index' %}">Ordem de Serviço</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title ellipsis">ID: {{ cliente.pk }}</h3>
+                    <div class="panel-toolbar text-right">
+                        <a class="btn btn-default" href="{% url 'clientes:clientes_edit' pk=cliente.pk %}"><span
+                                class="ico-pencil6"></span> Editar</a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Mais
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a id="bt-registro" href="{% url 'clientes:clientes_add' %}">Cadastrar Novo</a></li>
+                                <li>
+                                    <a href="#">
+                                        <span class="text">Ordens Serviço</span>
+                                        <span class="number">
+		                    			<span class="label label-success">0</span>
+		                    			</span>
+                                    </a>
+                                </li>
+                                <li><a id="bt-opces" href="#">Dispositivos Relacionados</a></li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"><span class="ico-trash"></span> Deletar</button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <tbody class="visualizacao-corpo">
+                        <tr>
+                            <td>Nome</td>
+                            <td>{{ cliente.pes_nome }}</td>
+                        </tr>
+                        <tr>
+                            <td>Telefone</td>
+                            <td>{{ cliente.pes_telefone }}</td>
+                        </tr>
+                        <tr>
+                            <td>Celular</td>
+                            <td>{{ cliente.pes_celular }}</td>
+                        </tr>
+                        <tr>
+                            <td>CPF</td>
+                            <td>{{ cliente.pes_cpf }}</td>
+                        </tr>
+                        <tr>
+                            <td>RG</td>
+                            <td>{{ cliente.pes_rg }}</td>
+                        </tr>
+                        <tr>
+                            <td>E-mail</td>
+                            <td>{{ cliente.pes_email }}</td>
+                        </tr>
+                        <tr>
+                            <td>CPF</td>
+                            <td>{{ cliente.pes_cpf }}</td>
+                        </tr>
+                        <tr>
+                            <td>Data do Cadastro</td>
+                            <td>{{ cliente.created_at }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Painel Dispositivos -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title panel-title-mini">Dispositivos</h4>
+                    <div class="panel-toolbar text-right">
+
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-stripped table-hover">
+                        <thead>
+                        <tr>
+                            <th class="col-table-1">ID</th>
+                            <th class="col-table-1">Marca</th>
+                            <th class="col-table-1">Modelo</th>
+                            <th class="col-table-1">IMEI</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if cliente.dispositivo_set %}
+                            {% for dispositivo in cliente.dispositivo_set.select_related %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'dispositivos:dispositivos_detail' pk=dispositivo.pk %}">{{ dispositivo.pk }}</a><br>
+                                <td>
+                                    {{ dispositivo.modelo }}
+                                </td>
+                                <td>
+                                    {{ dispositivo.marca }}
+                                <td>
+                                    {{ dispositivo.imei }}
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <td>Nenhum dispositivo vinculado a este cliente</td>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--./ Painel Dispositivos -->
+
+        <!-- Painel Ordem de Servico -->
+        <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title panel-title-mini">Histórico</h4>
+                    <div class="panel-toolbar text-right">
+
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-stripped table-hover">
+                        <thead>
+                        <tr>
+                            <th class="col-table-1">Data/Hora</th>
+                            <th class="col-table-1">O.S</th>
+                            <th class="col-table-1">Status</th>
+                            <th class="col-table-6">Descrição</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>20/05/18 08:50hrs</td>
+                            <td>1001</td>
+                            <td>Aberta</td>
+                            <td>Aparelho com tela trincada. Muitos arranhões. Sem carregador.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--./ Painel Dispositivos -->
+
+
+        </div>
+    </div>
+
+
+    <!-- Modal Delete -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Confirmação</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>Tem certeza que deseja deletar o cliente???</h4><br>
+                    <h4>Nome: {{ cliente.pes_nome }}</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <a id="btn-excluir"
+                       class="btn btn-danger"
+                       href="{% url 'clientes:clientes_delete' pk=cliente.pk %}">Deletar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ...Modal Delete -->
+
+
+
+
+
+{% endblock %}
+
+{% block javascript %}
+  <script>
+    $(document).on('click', ':not(form)[data-confirm]', function(e){
+      if(!confirm($(this).data('confirm'))){
+          e.stopImmediatePropagation();
+          e.preventDefault();
+      }
+    });
+  </script>
+{% endblock %}

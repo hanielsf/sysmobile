@@ -1,0 +1,176 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block titulo %}
+    <h4 class="title semibold">Ordem Serviço</h4>
+{% endblock %}
+
+{% block toolbar %}
+    <div class="toolbar">
+        <ol class="breadcrumb breadcrumb-transparent nm">
+            <li><a href="/">Desktop</a></li>
+            <li class="active">Ordens de Serviço</li>
+        </ol>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active">
+                    <a href="{% url 'servicos:ordemservicos_index' %}">Ordens de Serviço</a>
+                </li>
+                <li>
+                    <a href="{% url 'clientes:clientes_index' %}">Clientes</a>
+                </li>
+                <li>
+                    <a href="{% url 'dispositivos:dispositivos_index' %}">Dispositivos</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h3 class="panel-title ellipsis">Todas</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4 form-group">
+                            <input id="buscaNome" type="text" placeholder="Buscar por nome, cliente, imei, etc..."
+                                   class="form-control filtro">
+                        </div>
+                        <div class="col-sm-8 form-group" align="right"><a class="btn btn-success" href="{% url 'servicos:ordemservicos_add' %}"><span
+                                class="glyphicon glyphicon-plus"></span> Criar nova</a></div>
+
+                    </div>
+
+                    <div id="tabela-trabalhadores">
+                        <div class="table-responsive">
+
+
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>NUMERO</th>
+                                    <th>CLIENTE</th>
+                                    <th>DISPOSITIVO</th>
+                                    <th>STATUS</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {% for os in ordensservico %}
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'servicos:ordemservicos_detail' pk=os.pk %}">#{{ os.pk }}</a><br>
+                                        <td>
+                                            {{ os.cliente.pes_nome|upper }}
+                                        </td>
+                                        <td>
+                                            {{ os.dispositivos.marca }} / {{ os.dispositivos.modelo|upper }}
+                                        <td>
+                                            {{ os.get_status_display }}
+                                        <td width="auto">
+                                            <a class="btn btn-default btn-sm"
+                                               href="{% url 'servicos:ordemservicos_detail' pk=os.pk %}"><span
+                                                    class="ico-eye-open"></span></a>
+                                            <a class="btn btn-info btn-sm"  href="{% url 'pdf:generate_pdf' pk=os.pk %}" target="_blank"><span class="ico-print"></span></a>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Modal Delete -->
+                                    <div class="modal fade" id="imprimirModal" tabindex="-1" role="dialog"
+                                         aria-labelledby="deleteModal">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close"><span
+                                                            aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title">Confirmação</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h4>Tem certeza que deseja deletar o dispositivo???</h4><br>
+                                                    <h4>ID:</h4>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Cancelar
+                                                    </button>
+                                                    <a id="btn-excluir"
+                                                       class="btn btn-danger"
+                                                       href="#">Deletar</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- ...Modal Delete -->
+
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <!-- Paginacao -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {% if ordensservico.has_other_pages %}
+                                    <ul class="pagination">
+                                        {% if ordensservico.has_previous %}
+                                            <li class="active">
+                                                <a href="?page={{ ordensservico.previous_page_number }}"
+                                                   aria-label="Anterior">
+                                                    <span class="glyphicon glyphicon-chevron-left"></span> Anterior
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="disabled">
+                                                <a href="#" aria-label="Anterior">
+                                                    <span class="glyphicon glyphicon-chevron-left"></span> Anterior
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% for i in ordensservico.paginator.page_range %}
+                                            {% if ordensservico.number == i %}
+                                                <li class="active"><a href="javascript:void(0);">{{ i }}</a></li>
+                                            {% else %}
+                                                <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if ordensservico.has_next %}
+                                            <li class="enabled">
+                                                <a href="?page={{ ordensservico.next_page_number }}"
+                                                   aria-label="Próximo">
+                                                    <span class="glyphicon glyphicon-chevron-right"></span> Próximo
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="disabled">
+                                                <a href="javascript:void(0);" aria-label="Próximo">
+                                                    <span class="glyphicon glyphicon-chevron-right"></span> Próximo
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!--./ Paginacao -->
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+{% endblock %}

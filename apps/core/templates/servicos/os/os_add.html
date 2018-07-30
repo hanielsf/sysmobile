@@ -1,0 +1,171 @@
+{% extends 'core/base.html' %}
+{% load core_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block titulo %}
+    <h4 class="title semibold">Nova Ordem Serviço</h4>
+{% endblock %}
+
+{% block toolbar %}
+    <div class="toolbar">
+        <ol class="breadcrumb breadcrumb-transparent nm">
+            <li><a href="/">Desktop</a></li>
+            <li><a href="{% url 'servicos:ordemservicos_index' %}">Ordem Serviço</a></li>
+            <li class="active">Nova ordem de serviço</li>
+        </ol>
+    </div>
+{% endblock %}
+
+{% block title %}
+    <h4 class="topbar-title">Criar Ordem Serviço</h4>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav nav-pills nav-stacked">
+                <li>
+                    <a href="{% url 'servicos:ordemservicos_index' %}">Ordens Serviço</a>
+                </li>
+                <li>
+                    <a href="{% url 'clientes:clientes_index' %}">Clientes</a>
+                </li>
+                <li>
+                    <a href="{% url 'dispositivos:dispositivos_index' %}">Dispositivos</a>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="col-sm-10">
+            <div class="row" id="painel-resultado">
+                <div class="col-sm-9">
+                    <form id="adOS" class="panel panel-default" method="post"
+                          method="post">
+                        {% csrf_token %}
+
+                        <div class="panel-body">
+                            <div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Cliente*</label>
+                                            {{ form.cliente|addcss:"form-control" }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Dispositivo(s)*</label>
+                                           {{ form.dispositivos|addcss:"form-control" }}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Tipo de Serviço*</label>
+                                            {{ form.tipo_servico|addcss:"form-control" }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Status</label>
+                                            {{ form.status|addcss:"form-control" }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group valor">
+                                        <label class="control-label col-md-4">Orçamento:</label>
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">R$</span>
+                                                {% render_field form.orcamento|append_attr:"" type="text" maxlength="7" class="form-control" %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Possui acessórios?</label>
+                                            <div class="form-check">
+                                               {{ form.acessorios }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label class="control-label">Hospedagem</label>
+                                            <input type="text" name="{{ form.hospedagem.html_name }}" onkeyup="this.value = this.value.toUpperCase();"
+                                                   maxlength="4" class="form-control hospedagem" id="{{ form.hospedagem.id_for_label }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group motivo-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="control-label">Descrição / Observação</label>
+                                        {{ form.descricao }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row text-center form-group">
+                                <input type="submit" class="btn btn-primary" value="Salvar" id="salvar">
+                                <a href="{% url 'servicos:ordemservicos_index' %}">Cancelar</a>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="{% static 'js/jquery.mask.min.js' %}"></script>
+
+    <script>
+        $('.hospedagem').mask('S-99');
+    </script>
+
+    <script type="text/JavaScript">
+
+       function getDispositivo() {
+
+            //get a reference to the select element
+            var $select = $('#id_dispositivos');
+            //request the JSON data and parse into the select element
+            var cliente_id = ($("select[name='cliente'] option:selected").attr('value'));
+            var c_url = "/api/get_dispositivo/" + cliente_id;
+
+            $.ajax({
+                url: c_url,
+                dataType: 'JSON',
+                success: function (data) {
+                    //clear the current content of the select
+                    $select.html('');
+                    //iterate over the data and append a select option
+
+                    $.each(data, function (key, val) {
+                        $select.append('<option value="' + val.disp_id + '">' + val.modelo + '</option>');
+                    })
+                }
+
+            });
+
+        }
+    </script>
+{% endblock %}
+

@@ -1,0 +1,177 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block titulo %}
+    <h4 class="title semibold">Dispositivos</h4>
+{% endblock %}
+
+{% block toolbar %}
+    <div class="toolbar">
+        <ol class="breadcrumb breadcrumb-transparent nm">
+            <li><a href="/">Desktop</a></li>
+            <li class="active">Dispositivos</li>
+        </ol>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active">
+                    <a href="{% url 'dispositivos:dispositivos_index' %}">Dispositivos</a>
+                </li>
+                <li>
+                    <a href="{% url 'clientes:clientes_index' %}">Clientes</a>
+                </li>
+                <li>
+                    <a href="{% url 'servicos:ordemservicos_index' %}">Ordem de Serviço</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h3 class="panel-title ellipsis">Todos os dispositivos</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4 form-group">
+                            <input id="buscaNome" type="text" placeholder="Buscar por imei"
+                                   class="form-control filtro">
+                        </div>
+                        <div class="col-sm-8 form-group" align="right"><a class="btn btn-success" href="{% url 'dispositivos:dispositivos_add' %}"><span
+                                class="glyphicon glyphicon-plus"></span> Adicionar</a></div>
+
+                    </div>
+
+                    <div id="tabela-trabalhadores">
+                        <div class="table-responsive">
+
+
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>MODELO</th>
+                                    <th>MARCA</th>
+                                    <th>IMEI</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {% for dispositivo in dispositivos %}
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'dispositivos:dispositivos_detail' pk=dispositivo.pk %}">{{ dispositivo.pk }}</a><br>
+                                        <td>
+                                            {{ dispositivo.modelo }}
+                                        </td>
+                                        <td>
+                                            {{ dispositivo.marca }}
+                                        <td>
+                                            {{ dispositivo.imei }}
+                                        <td>
+                                            <a class="btn btn-default btn-sm"
+                                               href="{% url 'dispositivos:dispositivos_edit' pk=dispositivo.pk %}"><span
+                                                    class="ico-pencil6"></span> Editar</a>
+                                            <a class="btn btn-danger btn-sm btn-excluir" data-toggle="modal"
+                                               data-target="#deleteModal"><span class="ico-trash"> Deletar</span></a>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Modal Delete -->
+                                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+                                         aria-labelledby="deleteModal">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close"><span
+                                                            aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title">Confirmação</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h4>Tem certeza que deseja deletar o dispositivo???</h4><br>
+                                                    <h4>ID: {{ dispositivo.pk }}</h4>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Cancelar
+                                                    </button>
+                                                    <a id="btn-excluir"
+                                                       class="btn btn-danger"
+                                                       href="{% url 'dispositivos:dispositivos_delete' pk=dispositivo.pk %}">Deletar</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- ...Modal Delete -->
+
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <!-- Paginacao -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {% if dispositivos.has_other_pages %}
+                                    <ul class="pagination">
+                                        {% if dispositivos.has_previous %}
+                                            <li class="active">
+                                                <a href="?page={{ dispositivos.previous_page_number }}"
+                                                   aria-label="Anterior">
+                                                    <span class="glyphicon glyphicon-chevron-left"></span> Anterior
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="disabled">
+                                                <a href="#" aria-label="Anterior">
+                                                    <span class="glyphicon glyphicon-chevron-left"></span> Anterior
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% for i in dispositivos.paginator.page_range %}
+                                            {% if dispositivos.number == i %}
+                                                <li class="active"><a href="javascript:void(0);">{{ i }}</a></li>
+                                            {% else %}
+                                                <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if dispositivos.has_next %}
+                                            <li class="enabled">
+                                                <a href="?page={{ dispositivos.next_page_number }}"
+                                                   aria-label="Próximo">
+                                                    <span class="glyphicon glyphicon-chevron-right"></span> Próximo
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="disabled">
+                                                <a href="javascript:void(0);" aria-label="Próximo">
+                                                    <span class="glyphicon glyphicon-chevron-right"></span> Próximo
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!--./ Paginacao -->
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+{% endblock %}

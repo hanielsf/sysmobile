@@ -1,0 +1,227 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block titulo %}
+
+    {% now "H" as current_time %}
+
+    {% if current_time > 12 and current_time <= 18 %}
+         <h4 class="title">Boa tarde, {{ user.first_name }}!</h4>
+    {% elif current_time >= 6 and current_time <= 12 %}
+        <h4 class="title">Bom dia, {{ user.first_name }}!</h4>
+    {% else %}
+        <h4 class="title">Boa noite, {{ user.first_name }}!</h4>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- Linha 0 Dasboard -->
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Busca rápida</h2>
+            <div id="custom-search-input">
+                <div class="input-group col-md-12">
+                    <select id="busca" class="form-control js-data-example-ajax input-lg">
+                    </select>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info btn-lg" type="button">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    <br>
+
+    </div>
+    <!--./ Linha 0 Dasboard -->
+    <div class="row">
+        <div class="col-md-4"></div>
+    </div>
+
+
+        <!-- Linha 1 Dasboard -->
+        <div class="row">
+
+            <!-- Coluna 1 Dasboard -->
+            <div class="col-md-4">
+
+                <!-- Panel Cliente -->
+                <div class="panel panel-danger">
+                    <div class="panel-heading" align="center">
+                        CLIENTE / DISPOSITIVO
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+
+                                <!-- Add Cliente -->
+                                <div class="col-xs-6 col-sm-4">
+                                    <div class="div-square">
+                                        <a href="{% url 'clientes:clientes_add' %}">
+                                            <img alt="Add Cliente" style="width: 76px; height: 76px;"
+                                                 src="{% static 'image/icons/add-cliente.png' %}">
+                                            <h4>Add Cliente</h4>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <!-- Add Dispositivo -->
+                                <div class="col-xs-6 col-sm-4">
+                                    <div class="div-square">
+                                        <a href="{% url 'dispositivos:dispositivos_add' %}">
+                                            <img alt="Pesquisar Dispositivo" style="width: 76px; height: 76px;"
+                                                 src="{% static 'image/icons/add-dispositivo.png' %}">
+                                            <h4>Add Dispositivo</h4>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--./ Panel Cliente -->
+
+                <!--./ Coluna 1 Dashboard -->
+            </div>
+
+            <!-- Coluna 2 Dashboard -->
+             <div class="col-md-4">
+                     <!-- Panel Ordem Servico -->
+                <div class="panel panel-danger">
+                    <div class="panel-heading" align="center">
+                        ORDEM SERVIÇO
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+
+                                <!-- Add OS -->
+                                <div class="col-xs-6 col-sm-4">
+                                    <div class="div-square">
+                                        <a href="{% url 'servicos:ordemservicos_add' %}">
+                                            <img alt="Add O.S" style="width: 76px; height: 76px;"
+                                                 src="{% static 'image/icons/add-os.png' %}">
+                                            <h4>Criar Nova</h4>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <!-- Pesquisa OS -->
+                                <div class="col-xs-6 col-sm-4">
+                                    <div class="div-square">
+                                        <a href="{% url 'servicos:ordemservicos_index' %}">
+                                            <img alt="Pesquisa O.S" style="width: 76px; height: 76px;"
+                                                 src="{% static 'image/icons/pesquisa-os.png' %}">
+                                            <h4>Pesquisar</h4>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <!--./ Panel Ordem Servico -->
+
+             </div>
+            <!--./ Coluna 2 Dashboard -->
+
+            <!-- Coluna 3 Dasboard -->
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h5 class="panel-title titulo-pequeno"><i class="ico-bar-chart mr5"></i>Índices Atuais</h5>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"><i class="ico-circle mr5 text-success"></i>O.S Entregues
+                            <span class="semibold pull-right">{{ os_fechadas }}</span></li>
+                        <li class="list-group-item"><i class="ico-circle mr5 text-primary"></i>O.S Enceradas
+                            <span class="semibold pull-right">{{ os_fechadas }}</span></li>
+                        <li class="list-group-item"><i class="ico-circle mr5 text-danger"></i>O.S Abertas
+                            <span class="semibold pull-right">{{ os_abertas }}</span></li>
+                        <li class="list-group-item"><i class="ico-circle mr5 text-error"></i>Prazo Encerrado
+                            <span class="semibold pull-right">{{ os_atradadas }}</span></li>
+                    </ul>
+                </div>
+            </div>
+            <!--./ Clouna 3 Dasboard -->
+
+            <!--./ Linha 1 Dasboard -->
+        </div>
+
+
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+
+
+        $('#busca').select2({
+            language: 'pt-BR',
+            ajax: {
+                url: "/api/busca/",
+                 dataType: 'json',
+                delay: 250,
+
+                data: function (params) {
+                    return {
+                        q: params.term, // search term
+                        page: params.page
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+
+                            if (item.cliente.pes_nome !== null) {
+                                item.cliente.pes_nome = item.cliente.pes_nome.toUpperCase()
+                            }
+                            if (item.hospedagem !== null) {
+                                item.hospedagem = item.hospedagem.toUpperCase()
+                            }else {
+                                item.hospedagem = "Local: ???"
+                            }
+
+                            return {
+
+                                id: item.os_id || item.cliente_id,
+                                text: "Cliente: " + item.cliente.pes_nome + ", &nbsp;" + item.hospedagem,
+
+                                results: data.items
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+            minimumInputLength: 2,
+            maximumInputLength: 11,
+            placeholder: 'QRcode, cliente...',
+            templateResult: formatResult
+
+        }).on('select2:select', function (e) {
+
+                if(typeof e.params.data.id !== "undefined" && e.params.data.id !== null) {
+                    window.location.replace("/servicos/os/detail/" + e.params.data.id);
+                }
+        });
+
+        function formatResult (item) {
+            if (item.loading) {
+                return item.text;
+            }
+                return '<div class="dropdown-item"> O.S: #' +
+                        item.id + '</div><span>' + item.text + '</div>';
+
+            }
+
+    </script>
+{% endblock %}

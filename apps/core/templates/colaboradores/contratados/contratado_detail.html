@@ -1,0 +1,229 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav nav-pills nav-stacked">
+                <li>
+                    <a href="{% url 'clientes:clientes_index' %}">Clientes</a>
+                </li>
+                <li>
+                    <a href="#">Dispositivos</a>
+                </li>
+                <li>
+                    <a href="#">Ordem Serviço</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title ellipsis">{{ contratado.pes_nome }}</h3>
+                    <div class="panel-toolbar text-right">
+                        <a class="btn btn-default" href="{% url 'colaboradores:contratado_edit' pk=cliente.pk %}"><span
+                                class="ico-pencil6"></span> Editar</a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Mais
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a id="bt-registro" href="javascript:void(0);">Ficha de Registro</a></li>
+                                <li>
+                                    <a href="#">
+                                        <span class="text">Dependentes</span>
+                                        <span class="number">
+		                    							<span class="label label-success">0</span>
+		                    						</span>
+                                    </a>
+                                </li>
+                                <li><a id="bt-opces" href="#">Opções Adicionais</a></li>
+                                <li><a id="bt-opces" href="#">Histórico de
+                                    Funções</a></li>
+                                <li><a id="bt-opces" href="#">Transferências</a></li>
+                                <li><a id="bt-arquivos" href="#">Anexos</a></li>
+                            </ul>
+                        </div>
+                        <a id="btn-excluir" class="btn btn-danger" data-confirm="Tem certeza, que deseja deletar: {{ contratado.pes_nome }} ???"
+                           href="#"><span class="ico-trash"></span> Deletar</a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <tbody class="visualizacao-corpo">
+                        <tr>
+                            <td>Matrícula</td>
+                            <td>{{ contratado.con_matricula }}</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>{{ contratado.pes_email }}</td>
+                        </tr>
+                        <tr>
+                            <td>Estabelecimento</td>
+                            <td>{{ contratado.estabelecimento }}</td>
+                        </tr>
+                        <tr>
+                            <td>Lotação</td>
+                            <td>{{ contratado.lotacao }}</td>
+                        </tr>
+                        <tr>
+                            <td>Função</td>
+                            <td>{{ contratado.funcao }}</td>
+                        </tr>
+                        <tr>
+                            <td>Sindicato</td>
+                            <td>{{ contratado.sindicato }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title panel-title-mini">Informações do Trabalho</h4>
+                    <div class="panel-toolbar text-right">
+                        <a class="btn btn-default" href="#"><span
+                                class="ico-pencil6"></span> Editar</a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <tbody class="visualizacao-corpo">
+                        <tr>
+                            <td>Tipo de regime trabalhista</td>
+                            <td>{{ contratado.con_tipo_reg_trabalhista }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tipo de regime previdenciário</td>
+                            <td>{{ contratado.get_con_tipo_reg_previdenciario_display }}</td>
+                        </tr>
+                        <tr>
+                            <td>Regime de jornada</td>
+                            <td>{{ contratado.get_con_regime_jornada_display }}</td>
+                        </tr>
+                        <tr>
+                            <td>Natureza da atividade</td>
+                            <td>{{ contratado.get_con_natureza_atividade_display }}</td>
+                        </tr>
+                        <tr>
+                            <td>Data base da categoria</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Categoria</td>
+                            <td>{{ contratado.get_con_categoria_display }}</td>
+                        </tr>
+                        <tr>
+                            <td>Vínculo com outra empresa</td>
+                            <td>{% if contratado.get_con_vinculo_outra_empresa_display == None %} Não Informado{% else %}{{contratado.con_salario_mensal}}{% endif %}</td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title panel-title-mini">Informações do Contrato</h4>
+                    <div class="panel-toolbar text-right">
+                        <a class="btn btn-default" href="#"><span
+                                class="ico-pencil6"></span> Editar</a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <tbody class="visualizacao-corpo">
+                        <tr>
+                            <td>Data de admissão</td>
+                            <td>{% if contratado.con_data_admissao == None %}Não Definida{% else %} {{ contratado.con_data_admissao }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>Tipo de contrato de trabalho</td>
+                            <td>{% if contratado.get_con_tipo_contrato_display == None %}Não Definido{% else %} {{ contratado.get_con_tipo_contrato_display }} {% endif %}</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Tipo de admissão</td>
+                            <td>{{ contratado.get_con_tipo_admissao_display }}</td>
+                        </tr>
+                        <tr>
+                            <td>Indicativo de admissão</td>
+                            <td>{{ contratado.get_con_indicativo_admissao_display }}</td>
+                        </tr>
+                        <tr>
+                            <td>Unidade de salário</td>
+                            <td>{{ contratado.get_con_unidade_salario_display }}</td>
+                        </tr>
+                        <tr>
+                            <td>Valor Por Mês</td>
+
+                            <td>{% if contratado.con_salario_mensal == None %}R$ 0,0{% else %}{{contratado.con_salario_mensal}}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>Calcular DSR</td>
+                            <td>{% if contratado.con_calcular_dsr == True %}Sim{% else %}Não{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>Recebe FGTS</td>
+                            <td>{% if contratado.con_receber_fgts == True %}Sim{% else %}Não{% endif %}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title panel-title-mini">Quadro de horários</h4>
+                    <div class="panel-toolbar text-right">
+                        <a class="btn btn-default" href="#"><span
+                                class="ico-pencil6"></span> Editar</a>
+                    </div>
+                </div>
+                <div class="table-responsive" id="tbTurnosAssociados">
+                    <table class="table table-stripped table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                            <th>Código</th>
+                            <th>Hr entrada</th>
+                            <th>Hr saída</th>
+                            <th>Duração</th>
+                            <th>Intervalo</th>
+                            <th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                        <tbody class="visualizacao-corpo">
+                        <tr>
+                            <td>Tipo de Jornada</td>
+                            <td colspan="5">Jornada Semanal</td>
+                        </tr>
+                        <tr>
+                            <td>Carga semanal em horas</td>
+                            <td colspan="5">00:00</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+  <script>
+    $(document).on('click', ':not(form)[data-confirm]', function(e){
+      if(!confirm($(this).data('confirm'))){
+          e.stopImmediatePropagation();
+          e.preventDefault();
+      }
+    });
+  </script>
+{% endblock %}
