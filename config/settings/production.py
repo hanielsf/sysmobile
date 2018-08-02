@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 
 INSTALLED_APPS = [
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'sweetify',
     'djmoney',
     'simple_history',
+    'import_export',
 
     'rest_framework',
     'django_filters',
@@ -195,3 +196,5 @@ REST_FRAMEWORK = {
     ]
 }
 
+# IMPORT / EXPORT
+IMPORT_EXPORT_USE_TRANSACTIONS = True

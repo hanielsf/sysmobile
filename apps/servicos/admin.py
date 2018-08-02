@@ -1,6 +1,7 @@
 from time import timezone
 
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 
 from apps.servicos.DefaultFilterMixin import DefaultFilterMixin
 from .models import OrdemServico
@@ -8,7 +9,7 @@ from .models import OrdemServico
 
 
 @admin.register(OrdemServico)
-class OrdemServicopAdmin(DefaultFilterMixin, admin.ModelAdmin):
+class OrdemServicoAdmin(DefaultFilterMixin, ImportExportModelAdmin):
     date_hierarchy = 'created_at'
 
     list_display = (
@@ -31,5 +32,7 @@ class OrdemServicopAdmin(DefaultFilterMixin, admin.ModelAdmin):
             'created_at__year': now.year,
             'created_at__month': now.month,
         }
+
+    pass
 
 
