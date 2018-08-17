@@ -3,8 +3,10 @@
 <html lang="pt-br">
     {% load static %}
   <head>
+    <meta name="language" content="pt-BR" />
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
     <meta name="description" content="Gestao em Assistência Técnica">
 
     <title>SysMobile | Excelência</title>
@@ -88,7 +90,7 @@
                     <li class="step3" >
                         <a target="_blank" href="#">
                             <span class="meta">
-                                <span class="icon"><i class="ico-question"></i></span>
+                               <!-- <span class="icon"><i class="ico-question"></i></span> -->
                             </span>
                         </a>
                     </li>
@@ -116,9 +118,7 @@
                             </li>
                             <li class="divider"></li>
                             <li>
-	                            <form action="#" method="post"><input type="hidden" name="_csrf" value="b8dabb07-997a-4548-8442-ecc91c5f1e79"/>
-		                            <a href="#" onclick="this.parentNode.submit()"><span class="icon"><i class="ico-exit"></i></span> Sair</a>
-	                            </form>
+                                <a href="{% url 'core:sign-out' %}"><span class="icon"><i class="ico-exit"></i></span> Sair</a>
                             </li>
                         </ul>
                     </li>

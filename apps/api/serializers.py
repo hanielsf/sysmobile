@@ -20,7 +20,7 @@ class DispositivoSerializer(serializers.ModelSerializer):
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
-        fields = ['pes_nome', 'pes_celular', 'pes_cpf']
+        fields = ['cliente_id', 'pes_nome', 'pes_celular', 'pes_cpf']
 
 
 # ==================== MODEL ORDEMSERVICO ============================
@@ -28,7 +28,7 @@ class OrdemServicoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrdemServico
-        fields = ['os_id', 'hospedagem', 'cliente']
+        fields = ['os_id', 'hospedagem', 'cliente', 'status']
 
 
 # ==================== BUSCA GLOBAL =============================
@@ -37,7 +37,7 @@ class BuscaGlobalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrdemServico
-        fields = ['os_id', 'hospedagem', 'cliente', 'cliente_id']
+        fields = ['os_id', 'hospedagem', 'cliente', 'status']
 
     @staticmethod
     def to_native(obj):

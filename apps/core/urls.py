@@ -2,6 +2,9 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 
+# Rest-Framework
+from rest_framework.authtoken import views as rest_framework_views
+
 # Views Core
 from . import views
 
@@ -14,4 +17,7 @@ urlpatterns = [
          auth_views.logout,
          {'next_page': '/'},
          name='sign-out'),
+
+    # Token Rest-Framework
+    path('get_auth_token/', rest_framework_views.obtain_auth_token, name='get_auth_token'),
 ]

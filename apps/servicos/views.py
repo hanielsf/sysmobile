@@ -10,6 +10,7 @@ from django.utils import timezone
 # Local
 from qr_code.qrcode.serve import make_qr_code_url
 from qr_code.qrcode.utils import QRCodeOptions
+from .utils import abbreviate
 
 from apps.clientes.models import Cliente
 from .models import OrdemServico

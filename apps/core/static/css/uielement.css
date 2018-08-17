@@ -15075,7 +15075,7 @@ hr {
 }
 @media (max-width: 767px) {
   #header.navbar .navbar-header {
-    background-color: #4C9ED9;
+    background-color: #ff0000;
   }
   #header.navbar .navbar-header > .navbar-brand > .logo-text {
     background-image: url("../image/logo/folhaweb-inverse-text.png");
@@ -15090,7 +15090,7 @@ hr {
   }
   #header.navbar .navbar-toolbar .navbar-nav > .navbar-main > a:active,
   #header.navbar .navbar-toolbar .navbar-nav > .navbar-main > a:focus {
-    background-color: #2B83C1;
+    background-color: #ff0000;
   }
   #header.navbar .navbar-toolbar .navbar-nav > .navbar-main > a > .meta > .label,
   #header.navbar .navbar-toolbar .navbar-nav > .navbar-main > a > .meta > .badge,

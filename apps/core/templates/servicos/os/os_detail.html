@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% load core_tags %}
 {% load qr_code %}
 
 {% block titulo %}
@@ -11,7 +12,7 @@
         <ol class="breadcrumb breadcrumb-transparent nm">
             <li><a href="/">Desktop</a></li>
             <li><a href="{% url 'servicos:ordemservicos_index' %}">Ordem Serviço</a></li>
-            <li class="active">Visualizando ordem de serviço</li>
+            <li class="active">Detalhes</li>
         </ol>
     </div>
 {% endblock %}
@@ -23,9 +24,6 @@
         <div class="col-md-2">
             <ul class="nav nav-pills nav-stacked">
                 <li>
-                    <a href="{% url 'servicos:ordemservicos_index' %}">Ordens de Serviço</a>
-                </li>
-                <li>
                     <a href="{% url 'clientes:clientes_index' %}">Clientes</a>
                 </li>
                 <li>
@@ -36,13 +34,13 @@
         <div class="col-md-9">
             <div >
 
-                <section class="content content_content" style="width: 70%; margin: auto;">
+                <section class="content content_content" style="width: 100%; margin: auto;">
                     <section class="invoice">
                         <!-- title row -->
                         <div class="row">
                             <div class="col-xs-12">
                                 <h2 class="page-header">
-                                    <i class="fa fa-globe"></i> {{ ordemservico.cliente.pes_nome }}
+                                    <i class="fa fa-globe"></i> {{ ordemservico.cliente.pes_nome|abreviar:"False" }}
                                     <small class="pull-right">Data: {{ ordemservico.created_at|date:'d/m/y' }}</small>
                                 </h2>
                             </div><!-- /.col -->
@@ -55,7 +53,7 @@
                                        CPF:
                                     <p class="cpf">{{ ordemservico.cliente.pes_cpf }}</p>
                                     Celular:
-                                    <p class="celular">{{ ordemservico.cliente.pes_celular }}
+                                    <p class="celular"><a href="tel:{{ ordemservico.cliente.pes_celular }}">{{ ordemservico.cliente.pes_celular }}</a></p>
                                 </div>
                             </div><!-- /.col -->
                             <div class="col-sm-4 invoice-col" align="center">
@@ -65,7 +63,7 @@
                                 <b>Hora: {{ ordemservico.created_at|date:'H:i' }}</b>
                                 <br><br>
                                 <b>Aberta por:</b><br>
-                                <b>{{ ordemservico.historico.get_history_user }}</b><br>
+                                <b></b><br>
 
                             </div><!-- /.col -->
                         </div><!-- /.row -->
@@ -154,7 +152,11 @@
                         <div class="row">
                             <!-- accepted payments column -->
                             <div class="col-md-12">
-                                <p class="lead"><strong>Status:</strong> {{ ordemservico.get_status_display }}</p>
+                                            {% if ordemservico.status != 8 and ordemservico.status != 9  %}
+                                                <p class="lead text-danger"><strong class="text-info">Status:</strong> {{ ordemservico.get_status_display }}</p>
+                                            {% else %}
+                                                <p class="lead text-success"><strong class="text-info">Status:</strong> {{ ordemservico.get_status_display }}</p>
+                                            {% endif %}
                                 <p class="text-center">
                                     <img width="128px" src="{{ qr_url }}" alt="QRCode"></p>
 
@@ -187,7 +189,7 @@
                 </section>
 
             </div>
-            <div class="content content_content" style="width: 80%; margin: auto;">
+            <div class="content content_content" style="width: 100%; align-content: center; align-items: center; margin: auto;">
                 <div class="panel-heading">
                     <h4 class="panel-title panel-title-mini">Histórico</h4>
                     <div class="panel-toolbar text-right">

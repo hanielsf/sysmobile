@@ -189,9 +189,13 @@
                                 item.hospedagem = "Local: ???"
                             }
 
+                            if(typeof item.cliente.id === "undefined" && item.cliente.id === null) {
+                                item.cliente.id = 0
+                            }
+
                             return {
 
-                                id: item.os_id || item.cliente_id,
+                                id: item.os_id,
                                 text: "Cliente: " + item.cliente.pes_nome + ", &nbsp;" + item.hospedagem,
 
                                 results: data.items

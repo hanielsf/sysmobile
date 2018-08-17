@@ -24,6 +24,10 @@ TIPO_SERVICOS = (
     ('14', 'Software - reinstalação'),
     ('15', 'Software - conta google'),
     ('16', 'Software - genérico'),
+    ('17', 'Base de Carga'),
+    ('18', 'Análise'),
+    ('19', 'Choque Bateria'),
+    ('20', 'Orçamento'),
 )
 
 STATUS = (
