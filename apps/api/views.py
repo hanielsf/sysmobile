@@ -3,8 +3,10 @@ from itertools import chain
 from django.db.models import Q
 
 from rest_framework import status, generics, viewsets
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 
 from .serializers import *
 
@@ -33,6 +35,8 @@ class DetailsViewOrdemServico(generics.RetrieveUpdateDestroyAPIView):
 
 # ====================== GET CLIENTE VIEW =============================
 @api_view(['GET'])
+@authentication_classes((SessionAuthentication, TokenAuthentication))
+@permission_classes((IsAuthenticated,))
 def get_cliente(request, sid):
     clienteobj = Cliente.objects.filter(ordemservico=sid)
     cliente_serializer = ClienteSerializer(clienteobj, many=True)
@@ -42,6 +46,8 @@ def get_cliente(request, sid):
 
 # ====================== GET DISPOSITIVO VIEW =============================
 @api_view(['GET'])
+@authentication_classes((SessionAuthentication, TokenAuthentication))
+@permission_classes((IsAuthenticated,))
 def get_dispositivo(request, cliente_id):
     dispositivoobj = Dispositivo.objects.filter(cliente_id=cliente_id)
     dispositivo_serializer = DispositivoSerializer(dispositivoobj, many=True)

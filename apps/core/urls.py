@@ -1,5 +1,5 @@
 # Django
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
 
 # Rest-Framework
@@ -20,4 +20,5 @@ urlpatterns = [
 
     # Token Rest-Framework
     path('get_auth_token/', rest_framework_views.obtain_auth_token, name='get_auth_token'),
+    path('rest-auth/', include('rest_auth.urls')),
 ]
