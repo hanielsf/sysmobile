@@ -13,10 +13,7 @@ urlpatterns = [
 
     #  Login / Logout
     path('sign-in/', views.login_user, name='sign-in'),
-    path('sign-out/',
-         auth_views.logout,
-         {'next_page': '/'},
-         name='sign-out'),
+    path('sign-out/', views.logout_view, name='sign-out'),
 
     # Token Rest-Framework
     path('get_auth_token/', rest_framework_views.obtain_auth_token, name='get_auth_token'),

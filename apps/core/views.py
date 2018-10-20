@@ -47,3 +47,10 @@ def login_user(request):
     return render(request, 'core/sign_in.html')
 #  ===================================================================================================
 
+
+#  LOGOUT_USER =======================================================================================
+def logout_view(request):
+    logout(request)
+    # Redirect to a success page.
+    return render(request, 'core/sign_in.html')
+#  ===================================================================================================
