@@ -140,9 +140,9 @@
                     </div>
                     <ul class="list-group">
                         <li class="list-group-item"><i class="ico-circle mr5 text-success"></i>O.S Entregues
-                            <span class="semibold pull-right">{{ os_fechadas }}</span></li>
-                        <li class="list-group-item"><i class="ico-circle mr5 text-primary"></i>O.S Enceradas
-                            <span class="semibold pull-right">{{ os_fechadas }}</span></li>
+                            <span class="semibold pull-right">{{ os_entregues }}</span></li>
+                        <li class="list-group-item"><i class="ico-circle mr5 text-primary"></i>O.S Prontas
+                            <span class="semibold pull-right">{{ os_prontas }}</span></li>
                         <li class="list-group-item"><i class="ico-circle mr5 text-danger"></i>O.S Abertas
                             <span class="semibold pull-right">{{ os_abertas }}</span></li>
                         <li class="list-group-item"><i class="ico-circle mr5 text-error"></i>Prazo Encerrado
@@ -208,7 +208,7 @@
             escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
             minimumInputLength: 2,
             maximumInputLength: 11,
-            placeholder: 'QRcode, cliente...',
+            placeholder: 'QRcode, cliente, cpf, hospedagem...',
             templateResult: formatResult
 
         }).on('select2:select', function (e) {

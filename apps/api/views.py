@@ -63,11 +63,13 @@ class BuscaGlobalList(generics.ListAPIView):
         query = self.request.query_params.get('q', None)
 
         ordenservico = OrdemServico.objects.filter(
-            Q(os_id__icontains=query) | Q(hospedagem__icontains=query))
-        cliente = Cliente.objects.filter(
-            Q(pes_nome__icontains=query) | Q(pes_celular__icontains=query) | Q(pes_cpf__icontains=query))
+            Q(os_id__icontains=query) | Q(hospedagem__icontains=query) |
+            Q(cliente__pes_nome__icontains=query) | Q(cliente__pes_cpf__icontains=query))
+#        cliente = Cliente.objects.filter(
+#            Q(pes_nome__icontains=query) | Q(pes_celular__icontains=query) | Q(pes_cpf__icontains=query))
 
-        all_results = list(chain(ordenservico, cliente))
+#        all_results = list(chain(ordenservico, cliente))
+        all_results = list(chain(ordenservico))
         all_results.sort(key=lambda x: x.created_at)
         return all_results
 

@@ -23,11 +23,12 @@ def dashboard(request):
     hoje = datetime.date.today()
 
     os_abertas = OrdemServico.objects.filter(Q(status=1)).count()
-    os_fechadas = OrdemServico.objects.filter(Q(status=8)).count()
+    os_prontas = OrdemServico.objects.filter(Q(status=8)).count()
+    os_entregues = OrdemServico.objects.filter(Q(status=9)).count()
     os_atrasadas = OrdemServico.objects.filter(created_at__day=-30 + hoje.day).count()
 
     args = {'user': user, 'message': storage, 'os_abertas': os_abertas,
-            'os_fechadas': os_fechadas, 'os_atradadas': os_atrasadas}
+            'os_prontas': os_prontas, 'os_atradadas': os_atrasadas, 'os_entregues': os_entregues}
     return render(request, 'core/dashboard.html', args)
 
 

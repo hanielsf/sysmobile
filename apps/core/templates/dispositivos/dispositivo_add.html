@@ -54,7 +54,8 @@
                     	  		<div class="form-group">
                     	  			<label class="control-label col-sm-4">Modelo*</label>
                     	  			<div class="col-sm-6">
-                    	  				{% render_field form.modelo|append_attr:"" onkeyup="this.value = this.value.toUpperCase();" %}
+                                         <input type="text" name="{{ form.modelo.html_name }}" onkeyup="this.value = this.value.toUpperCase();"
+                                                   maxlength="16" class="form-control" id="{{ form.modelo.id_for_label }}">
                     	  			</div>
                     	  		</div>
                     	  	 	<div class="form-group">
